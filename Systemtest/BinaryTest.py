@@ -162,7 +162,7 @@ if __name__ == '__main__':
     binarytest = BinaryTest(is_IOT=True)
     paths = binarytest.GetNeedTestPath(
         one_directory=True,
-        directorys=["/home/yuge/Documents/PBAEG/binaries/64bit/path_search_test/path_search_stack/path_search_stack_test1"]
+        directorys=["/home/yuge/Documents/ACBEG/binaries/zeratool-challenges/overflow/10_read_stack_64"]
     )
     #paths = binarytest.GetNeedTestPath(directorys=["../binaries/mips32/stack_overflow/dynamic/test1"])
     binarytest.SystemTestMain(paths=paths, force_update=True)
